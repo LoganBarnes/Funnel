@@ -3,6 +3,8 @@
 #include <sim-driver/SimData.hpp>
 #include <sim-driver/OpenGLTypes.hpp>
 
+struct GLFWwindow;
+
 class SimpleStupidFunnel
 {
 public:
@@ -10,6 +12,8 @@ public:
 
     void onRender(int width, int height, double alpha);
     void onGuiRender(int width, int height);
+
+    void keyCallback(GLFWwindow *pWindow, int key, int scancode, int action, int mods);
 
 private:
     sim::SimData &simData_;

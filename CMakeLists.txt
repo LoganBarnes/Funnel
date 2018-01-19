@@ -64,11 +64,14 @@ set(EXEC_SOURCE_FILES
         src/exec/SimpleStupidFunnel.cpp
         src/exec/SimpleStupidFunnel.hpp
         src/exec/main.cpp
+        src/exec/ssf.frag
+        src/exec/ssf.vert
         )
 configure_file(src/exec/Config.hpp.in ${CMAKE_BINARY_DIR}/ssf/Config.hpp)
 
 add_executable(funnel ${EXEC_SOURCE_FILES})
-target_link_libraries(funnel ssf ${CMAKE_BINARY_DIR})
+target_link_libraries(funnel ssf)
+target_include_directories(funnel PRIVATE ${CMAKE_BINARY_DIR})
 target_compile_options(funnel PRIVATE ${INTENSE_FLAGS})
 
 
