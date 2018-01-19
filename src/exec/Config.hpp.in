@@ -1,0 +1,12 @@
+#pragma once
+
+#include <string>
+
+namespace ssf
+{
+static const std::string &shader_path()
+{
+    static std::string path{"@CMAKE_CURRENT_SOURCE_DIR@/src/exec/"};
+    return path;
+}
+} // namespace ssf
