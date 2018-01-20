@@ -8,8 +8,7 @@
 #include <iostream>
 #include <sim-driver/WindowManager.hpp>
 
-SimpleStupidFunnel::SimpleStupidFunnel(int, int, sim::SimData *pSimData)
-    : simData_{*pSimData}
+SimpleStupidFunnel::SimpleStupidFunnel(int, int, sim::SimData *pSimData) : simData_{*pSimData}
 {
     sim::OpenGLHelper::setDefaults();
     glpl_.program = sim::OpenGLHelper::createProgram(ssf::shader_path() + "ssf.vert", ssf::shader_path() + "ssf.frag");
@@ -32,8 +31,7 @@ void SimpleStupidFunnel::onRender(int, int, double)
                                         "screen_from_world",
                                         glm::value_ptr(simData_.camera().getPerspectiveScreenFromWorldMatrix()));
 
-    auto draw = [&](const glm::vec3 &color, const std::pair<int, int> &indices, GLenum mode)
-    {
+    auto draw = [&](const glm::vec3 &color, const std::pair<int, int> &indices, GLenum mode) {
         if (indices.second > 0) {
             sim::OpenGLHelper::setFloatUniform(glpl_.program, "color", glm::value_ptr(color), 3);
             sim::OpenGLHelper::renderBuffer(glpl_.vao, indices.first, indices.second, mode);
@@ -67,12 +65,15 @@ void SimpleStupidFunnel::onGuiRender(int, int)
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     if (ImGui::Begin("Window", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        if (ImGui::Combo("Test Case", &current_test_, [](void *data, int index, const char **description)
-        {
-            ssf::Test<float> &test = static_cast<ssf::Test<float> *>(data)[index];
-            *description = test.name.c_str();
-            return true;
-        }, ssf::test_cases<float>().data(), ssf::test_cases<float>().size())) {
+        if (ImGui::Combo("Test Case",
+                         &current_test_,
+                         [](void *data, int index, const char **description) {
+                             ssf::Test<float> &test = static_cast<ssf::Test<float> *>(data)[index];
+                             *description = test.name.c_str();
+                             return true;
+                         },
+                         ssf::test_cases<float>().data(),
+                         static_cast<int>(ssf::test_cases<float>().size()))) {
             reset_test();
         }
     }
@@ -80,22 +81,22 @@ void SimpleStupidFunnel::onGuiRender(int, int)
     ImGui::PopStyleVar();
 }
 
-void SimpleStupidFunnel::keyCallback(GLFWwindow *, int key, int , int action, int )
+void SimpleStupidFunnel::keyCallback(GLFWwindow *, int key, int, int action, int)
 {
-    auto num_tests = ssf::test_cases<float>().size();
+    auto num_tests = static_cast<int>(ssf::test_cases<float>().size());
 
     if (action == GLFW_RELEASE) {
         switch (key) {
-            case GLFW_KEY_LEFT:
-                current_test_ = (current_test_ + num_tests - 1) % num_tests;
-                reset_test();
-                break;
-            case GLFW_KEY_RIGHT:
-                current_test_ = (current_test_ + 1) % num_tests;
-                reset_test();
-                break;
-            default:
-                break;
+        case GLFW_KEY_LEFT:
+            current_test_ = (current_test_ + num_tests - 1) % num_tests;
+            reset_test();
+            break;
+        case GLFW_KEY_RIGHT:
+            current_test_ = (current_test_ + 1) % num_tests;
+            reset_test();
+            break;
+        default:
+            break;
         }
     }
 }
